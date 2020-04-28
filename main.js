@@ -246,6 +246,7 @@
 
         function stay()
         {
+
             document.getElementById('changebtn').value = 'Draw for Player2';
             isThisHigher();
            
@@ -254,7 +255,7 @@
                 currentPlayer += 1;
                 document.getElementById('player_' + currentPlayer).classList.add('active');
             }
-
+            
             else {
                 end();
 
