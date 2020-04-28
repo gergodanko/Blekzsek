@@ -294,3 +294,7 @@
             shuffle();
             createPlayers(1);
         });
+        //Ha a játékos1-nek kevesebb értékű lapjai vannak húzás után, mint a 
+        //játékos2-nek, automatikusan a játékos2 nyer
+
+        //Bot
