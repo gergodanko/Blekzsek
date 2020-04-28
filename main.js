@@ -4,7 +4,7 @@
         var deck = new Array();
         var players = new Array();
         var currentPlayer = 0;
-
+        var first = true;
         function createDeck()
         {
             deck = new Array();
@@ -60,8 +60,7 @@
 
         function shuffle()
         {
-            // for 1000 turns
-            // switch the values of two random cards
+            
             for (var i = 0; i < 1000; i++)
             {
                 var location1 = Math.floor((Math.random() * deck.length));
@@ -72,12 +71,33 @@
                 deck[location2] = tmp;
             }
         }
-
+        function removeButton(id) 
+        {
+            var elem = document.getElementById(id);
+            if(id == "Player_btn")
+            {
+                document.getElementById('AI_btn').value = 'Restart';
+            }
+            else
+            {
+                document.getElementById('Player_btn').value = 'Restart';
+            }
+            elem.parentNode.removeChild(elem);
+            return false;
+        }
         function startblackjack()
         {
-            document.getElementById('btnStart').value = 'Restart';
+            first = true;
+            document.getElementById('changebtn').value = 'Draw for Player1';
+            document.getElementById("changebtn").style.visibility = "visible";
+
+
+            document.getElementById("staybtn").style.visibility = "visible";
+            document.getElementById("deck").style.visibility = "visible";
             document.getElementById("status").style.display="none";
-            // deal 2 cards to every player object
+            document.getElementById('changebtn').disabled = false;
+            document.getElementById('staybtn').disabled = false;
+            
             currentPlayer = 0;
             createDeck();
             shuffle();
@@ -85,12 +105,67 @@
             createPlayersUI();
             dealHands();
             document.getElementById('player_' + currentPlayer).classList.add('active');
+            isThisTwentyOne();
+            check();
         }
 
+        function isThisTwentyOne()
+        {
+            for(var i = 0; i < players.length; i++)
+            {
+                if(players[i].Points == 21)
+                {
+                    if(i==1)
+                    {
+                        first=false;
+                    }
+                    end();
+                }
+            }
+            
+        }
+
+        function end()
+        {
+            
+            document.getElementById('changebtn').disabled = true;
+            document.getElementById('staybtn').disabled = true;
+            
+            if (players[0].Points > players[1].Points && players[0].Points<21)
+            {
+                document.getElementById('status').innerHTML = 'Winner: Player 1';
+                document.getElementById("status").style.display = "inline-block";
+            }
+            else if(players[0].Points < players[1].Points &&players[1].Points<21)
+            {
+                document.getElementById('status').innerHTML = 'Winner: Player 2';
+                document.getElementById("status").style.display = "inline-block";
+            }
+
+            else if(players[0].Points == players[1].Points)
+            {
+                document.getElementById('status').innerHTML = 'Draw';
+                document.getElementById("status").style.display = "inline-block";
+            }
+
+            else
+            {
+
+                if(first==true)
+                {
+                    document.getElementById('status').innerHTML = 'Winner: Player 1';
+                    document.getElementById("status").style.display = "inline-block";
+                }
+                else if(first==false)
+                {
+                    document.getElementById('status').innerHTML = 'Winner: Player 2';
+                    document.getElementById("status").style.display = "inline-block";
+                }
+            }
+        }
         function dealHands()
         {
-            // alternate handing cards to each player
-            // 2 cards each
+           
             for(var i = 0; i < 2; i++)
             {
                 for (var x = 0; x < players.length; x++)
@@ -101,7 +176,7 @@
                     updatePoints();
                 }
             }
-
+            
             updateDeck();
         }
 
@@ -128,8 +203,14 @@
             el.innerHTML = card.Value + '<br/>' + icon;
             return el;
         }
-
-        // returns the number of points that a player has in hand
+        function isThisHigher()
+        {
+            if(players[1].Points>players[0].Points)
+            {
+                end();
+            }
+        }
+        
         function getPoints(player)
         {
             var points = 0;
@@ -152,19 +233,22 @@
 
         function hitMe()
         {
-            // pop a card from the deck to the current player
-            // check if current player new points are over 21
+            
             var card = deck.pop();
             players[currentPlayer].Hand.push(card);
             renderCard(card, currentPlayer);
             updatePoints();
             updateDeck();
             check();
+            isThisTwentyOne();
+            isThisHigher();
         }
 
         function stay()
         {
-            // move on to next player, if any
+            document.getElementById('changebtn').value = 'Draw for Player2';
+            isThisHigher();
+           
             if (currentPlayer != players.length-1) {
                 document.getElementById('player_' + currentPlayer).classList.remove('active');
                 currentPlayer += 1;
@@ -173,34 +257,28 @@
 
             else {
                 end();
+
             }
         }
 
-        function end()
-        {
-            var winner = -1;
-            var score = 0;
-
-            for(var i = 0; i < players.length; i++)
-            {
-                if (players[i].Points > score && players[i].Points < 22)
-                {
-                    winner = i;
-                }
-
-                score = players[i].Points;
-            }
-
-            document.getElementById('status').innerHTML = 'Winner: Player ' + players[winner].ID;
-            document.getElementById("status").style.display = "inline-block";
-        }
 
         function check()
         {
             if (players[currentPlayer].Points > 21)
             {
-                document.getElementById('status').innerHTML = 'Player: ' + players[currentPlayer].ID + ' LOST';
-                document.getElementById('status').style.display = "inline-block";
+                
+                if (currentPlayer==0)
+                {
+                    first=false;
+                }
+                else
+                {
+                    first=true;
+                }
+                end();
+            }
+            else if(players[1].Points>21)
+            {
                 end();
             }
         }
