@@ -23,15 +23,19 @@
                 <input type="button" id="Player_btn" class="btn" value="Against Player" onclick="startblackjack(),removeButton(id)" >
                 <input type="button" id="AI_btn" class="btn" value="Against A.I." onclick="startblackjack()">
                 <br><br>
+                <input type="number" name="someid" />
+                <br>
                 <input type="button" id="changebtn" class="btn" style='visibility:hidden' onclick="hitMe()">
                 <input type="button" id="staybtn" class="btn" value="Stay" style='visibility:hidden' onclick="stay()">
+                
                 </div>
-        
+                
                     <div class="status" id="status"></div>
         
                 <div id="deck" style='visibility:hidden' class="deck">
-                    <div id="deckcount" >52</div>
+                    <div id="deckcount" >100</div>
                 </div>
+                
         
                 <div id="players" class="players">
                 </div>

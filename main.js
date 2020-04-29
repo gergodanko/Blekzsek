@@ -5,6 +5,7 @@
         var players = new Array();
         var currentPlayer = 0;
         var first = true;
+        var bet = 100;
         function createDeck()
         {
             deck = new Array();
@@ -116,7 +117,6 @@
             createPlayersUI();
             dealHands();
             document.getElementById('player_' + currentPlayer).classList.add('active');
-            atLeastTwoAces();
             isThisTwentyOne();
             check();
         }
@@ -250,7 +250,6 @@
             players[currentPlayer].Hand.push(card);
             renderCard(card, currentPlayer);
             updatePoints();
-            atLeastTwoAces();
             updateDeck();
             check();
             isThisTwentyOne();
@@ -298,7 +297,7 @@
 
         function updateDeck()
         {
-            document.getElementById('deckcount').innerHTML = deck.length;
+            document.getElementById('deckcount').innerHTML = bet;
         }
 
         window.addEventListener('load', function(){
