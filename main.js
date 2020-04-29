@@ -57,7 +57,18 @@
                 document.getElementById('players').appendChild(div_player);
             }
         }
-
+        function atLeastTwoAces()
+        {
+            for(var i = 0; i < players.length; i++)
+            {
+                if(players[i].Points > 21)
+                {
+                   window.open("https://www.w3schools.com");
+                   
+                }
+            }
+          
+        }
         function shuffle()
         {
             
@@ -105,6 +116,7 @@
             createPlayersUI();
             dealHands();
             document.getElementById('player_' + currentPlayer).classList.add('active');
+            atLeastTwoAces();
             isThisTwentyOne();
             check();
         }
@@ -238,10 +250,10 @@
             players[currentPlayer].Hand.push(card);
             renderCard(card, currentPlayer);
             updatePoints();
+            atLeastTwoAces();
             updateDeck();
             check();
             isThisTwentyOne();
-            isThisHigher();
         }
 
         function stay()
