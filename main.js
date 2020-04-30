@@ -1,11 +1,12 @@
-
         var suits = ["Spades", "Hearts", "Diamonds", "Clubs"];
         var values = ["2", "3", "4", "5", "6", "7", "8", "9", "10", "J", "Q", "K", "A"];
         var deck = new Array();
         var players = new Array();
         var currentPlayer = 0;
         var first = true;
-        var bet = 100;
+        var betP1 = 500;
+        var betP2 = 500;
+
         function createDeck()
         {
             deck = new Array();
@@ -23,7 +24,6 @@
                 }
             }
         }
-
         function createPlayers(num)
         {
             players = new Array();
@@ -34,7 +34,6 @@
                 players.push(player);
             }
         }
-
         function createPlayersUI()
         {
             document.getElementById('players').innerHTML = '';
@@ -64,7 +63,7 @@
             {
                 if(players[i].Points > 21)
                 {
-                   window.open("https://www.w3schools.com");
+                   
                    
                 }
             }
@@ -99,28 +98,36 @@
         }
         function startblackjack()
         {
-            first = true;
-            document.getElementById('changebtn').value = 'Draw for Player1';
-            document.getElementById("changebtn").style.visibility = "visible";
+            if(document.getElementById('betID').value > 0)
+            {
+                var num = document.getElementById('betID').value ;
+                
+                document.getElementById('coins').innerHTML = num;
+                document.getElementById('betID').style.visibility = "hidden";
+                document.getElementById('bet_btn').style.visibility = "hidden";
+                
 
 
-            document.getElementById("staybtn").style.visibility = "visible";
-            document.getElementById("deck").style.visibility = "visible";
-            document.getElementById("status").style.display="none";
-            document.getElementById('changebtn').disabled = false;
-            document.getElementById('staybtn').disabled = false;
-            
-            currentPlayer = 0;
-            createDeck();
-            shuffle();
-            createPlayers(2);
-            createPlayersUI();
-            dealHands();
-            document.getElementById('player_' + currentPlayer).classList.add('active');
-            isThisTwentyOne();
-            check();
+                first = true;
+                document.getElementById('changebtn').value = 'Draw for Player1';
+                document.getElementById("changebtn").style.visibility = "visible";
+                document.getElementById("staybtn").style.visibility = "visible";
+                document.getElementById("deck").style.visibility = "visible";
+                document.getElementById("status").style.display="none";
+                document.getElementById('changebtn').disabled = false;
+                document.getElementById('staybtn').disabled = false;
+                
+                currentPlayer = 0;
+                createDeck();
+                shuffle();
+                createPlayers(2);
+                createPlayersUI();
+                dealHands();
+                document.getElementById('player_' + currentPlayer).classList.add('active');
+                isThisTwentyOne();
+                check();
+            }
         }
-
         function isThisTwentyOne()
         {
             for(var i = 0; i < players.length; i++)
@@ -136,7 +143,6 @@
             }
             
         }
-
         function end()
         {
             
@@ -173,6 +179,9 @@
                     document.getElementById('status').innerHTML = 'Winner: Player 2';
                     document.getElementById("status").style.display = "inline-block";
                 }
+                document.getElementById('betID').style.visibility = "hidden";
+                document.getElementById('bet_btn').style.visibility = "hidden";
+                
             }
         }
         function dealHands()
@@ -191,13 +200,11 @@
             
             updateDeck();
         }
-
         function renderCard(card, player)
         {
             var hand = document.getElementById('hand_' + player);
             hand.appendChild(getCardUI(card));
         }
-
         function getCardUI(card)
         {
             var el = document.createElement('div');
@@ -222,7 +229,6 @@
                 end();
             }
         }
-        
         function getPoints(player)
         {
             var points = 0;
@@ -233,7 +239,6 @@
             players[player].Points = points;
             return points;
         }
-
         function updatePoints()
         {
             for (var i = 0 ; i < players.length; i++)
@@ -242,10 +247,8 @@
                 document.getElementById('points_' + i).innerHTML = players[i].Points;
             }
         }
-
         function hitMe()
         {
-            
             var card = deck.pop();
             players[currentPlayer].Hand.push(card);
             renderCard(card, currentPlayer);
@@ -254,7 +257,6 @@
             check();
             isThisTwentyOne();
         }
-
         function stay()
         {
 
@@ -272,8 +274,6 @@
 
             }
         }
-
-
         function check()
         {
             if (players[currentPlayer].Points > 21)
@@ -294,18 +294,28 @@
                 end();
             }
         }
-
         function updateDeck()
         {
-            document.getElementById('deckcount').innerHTML = bet;
+            document.getElementById('coins').innerHTML = bet;
         }
+        function giveTheBets()
+        {
+            document.getElementById('bet_btn').style.visibility ="visible"; 
+            document.getElementById('betID').style.visibility ="visible"; 
+            document.getElementById('coin1').style.visibility ="visible"; 
+            document.getElementById('coin2').style.visibility ="visible"; 
+            document.getElementById('coin1Value').innerHTML = "" + betP1;
+            document.getElementById('coin2Value').innerHTML = "" + betP2;
+            
 
+        }
         window.addEventListener('load', function(){
             createDeck();
             shuffle();
             createPlayers(1);
         });
-        //Ha a játékos1-nek kevesebb értékű lapjai vannak húzás után, mint a 
-        //játékos2-nek, automatikusan a játékos2 nyer
-
+        //bet gomb: ha a Tb nem üres és >0, levon p1 p2 , 
+        //megmutatkoznak a lapok és lejátszák a kört
+        //kör végén bet Tb =0, győztes játékos pontok+= tét
+        //22 pont 2 ásszal legyen 12 pont
         //Bot
