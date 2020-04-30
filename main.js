@@ -98,8 +98,13 @@
         }
         function startblackjack()
         {
-            if(document.getElementById('betID').value > 0)
+            document.getElementById('Player_btn').style.visibility="hidden";
+            document.getElementById('Player_btn').value="Restart";
+            document.getElementById('players').style.visibility="visible";
+            
+            if(document.getElementById('betID').value > 0 )
             {
+
                 var num = document.getElementById('betID').value ;
                 
                 document.getElementById('coins').innerHTML = num;
@@ -139,9 +144,9 @@
                         first=false;
                     }
                     end();
+                    
                 }
             }
-            
         }
         function end()
         {
@@ -149,20 +154,24 @@
             document.getElementById('changebtn').disabled = true;
             document.getElementById('staybtn').disabled = true;
             
-            if (players[0].Points > players[1].Points && players[0].Points<21)
+            if (players[0].Points<21 && players[0].Points > players[1].Points )
             {
                 document.getElementById('status').innerHTML = 'Winner: Player 1';
                 document.getElementById("status").style.display = "inline-block";
+                document.getElementById('Player_btn').style.visibility="visible";
+
             }
-            else if(players[0].Points < players[1].Points &&players[1].Points<21)
+            else if(players[1].Points<21 && players[0].Points < players[1].Points)
             {
                 document.getElementById('status').innerHTML = 'Winner: Player 2';
+                document.getElementById('Player_btn').style.visibility="visible";
                 document.getElementById("status").style.display = "inline-block";
             }
 
             else if(players[0].Points == players[1].Points)
             {
                 document.getElementById('status').innerHTML = 'Draw';
+                document.getElementById('Player_btn').style.visibility="visible";
                 document.getElementById("status").style.display = "inline-block";
             }
 
@@ -172,17 +181,20 @@
                 if(first==true)
                 {
                     document.getElementById('status').innerHTML = 'Winner: Player 1';
+                    document.getElementById('Player_btn').style.visibility="visible";
                     document.getElementById("status").style.display = "inline-block";
                 }
                 else if(first==false)
                 {
                     document.getElementById('status').innerHTML = 'Winner: Player 2';
+                    document.getElementById('Player_btn').style.visibility="visible";
                     document.getElementById("status").style.display = "inline-block";
                 }
                 document.getElementById('betID').style.visibility = "hidden";
                 document.getElementById('bet_btn').style.visibility = "hidden";
                 
             }
+            document.getElementById("status").style.visibility="visible";
         }
         function dealHands()
         {
@@ -254,6 +266,7 @@
             renderCard(card, currentPlayer);
             updatePoints();
             updateDeck();
+            
             check();
             isThisTwentyOne();
         }
@@ -261,17 +274,18 @@
         {
 
             document.getElementById('changebtn').value = 'Draw for Player2';
+
             isThisHigher();
-           
-            if (currentPlayer != players.length-1) {
+
+            if (currentPlayer != players.length-1) 
+            {
                 document.getElementById('player_' + currentPlayer).classList.remove('active');
                 currentPlayer += 1;
                 document.getElementById('player_' + currentPlayer).classList.add('active');
             }
-            
-            else {
+            else 
+            {
                 end();
-
             }
         }
         function check()
@@ -289,17 +303,27 @@
                 }
                 end();
             }
-            else if(players[1].Points>21)
+            else if(players[1].Points > 21)
             {
                 end();
             }
         }
         function updateDeck()
         {
+            var bet = document.getElementById('betID').value;
             document.getElementById('coins').innerHTML = bet;
         }
         function giveTheBets()
         {
+            document.getElementById('betID').style.visibility="hidden";
+            document.getElementById('bet_btn').style.visibility="hidden";
+            document.getElementById('changebtn').style.visibility="hidden";
+            document.getElementById('staybtn').style.visibility="hidden";
+            document.getElementById('deck').style.visibility="hidden";
+            document.getElementById('players').style.visibility="hidden";
+            document.getElementById("status").style.visibility="hidden";
+
+            document.getElementById('Player_btn').style.visibility="hidden";
             document.getElementById('bet_btn').style.visibility ="visible"; 
             document.getElementById('betID').style.visibility ="visible"; 
             document.getElementById('coin1').style.visibility ="visible"; 
